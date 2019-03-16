@@ -7,15 +7,38 @@ Scout Geiger counters and write them in a MySQL database.
 ## License
 GNU GPL v3.
 
+## Setup
+
+To create a MySQL database you can use _database.sql_.
+
+The log data table is created with _tables.sql_.
+
 ## gammascout.sh
 
 This shell script will identify a Gamma Scout and read out all log data.
 Data is saved to an XML file and then imported into the database.
 
+### Usage
+
+Plug in your Gamma Scout Geiger counter and start the shell skript.
+
+gammascout.sh can detect which USB interface the Geiger counter is connected to.
+
+    ./gammascout.sh
+
+You can set GAMMA_SCOUT_USB to the USB device:
+
+	export GAMMA_SCOUT_USB=/dev/ttyUSB1
+	./gammascout.sh
+
 ## gammascout.php
 
 This PHP script will parse one XML log file and import the data into the
 MySQL database.
+
+### Usage
+
+    php gammascout.php <XML file>
 
 ## gammascoututil
 This is an ancient project of mine, gammascoututil. It's a tool to read out
