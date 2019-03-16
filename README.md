@@ -15,5 +15,60 @@ curves from counts/sec to µSv/hr.
 The reverse engineered Gamma Scout protocol documentation can be found at
 https://johannes-bauer.com/linux/gammascout/
 
-# License
+_-- Johannes Bauer_
+
+## Prerequisites
+Here's what's required to get GammaScoutUtil running:
+   
+- Python 3.0 or greater
+- pyserial
+
+
+	sudo apt-get install python3 python3-serial
+
+## Getting Started
+
+After plugging in the Gamma Scout into your USB port, check with dmesg which
+device it is recognized as. Usually this will be /dev/ttyUSB0. Then, you can
+call gammascoututil to check if it finds your Gamma Scout. Putting the Gamma
+Scout into PC mode beforehand is actually not necessary, the software takes care
+of that.
+
+### Usage
+
+	gammascoututil <options> <commands>
+
+	Options:
+
+	-d Device     Specifies the serial device that the Gamma Scout is connected
+	              to. Default is /dev/ttyUSB0.
+	-p Protocol   Specifies the device protocol the connected Gamma Scout uses.
+	              Either 'v1' or 'v2'. Default is 'v2'.
+	-v            Outputs debug information.
+	--help        Displays this help page.
+
+	Commands:
+
+	identify
+	    Displays information like the Gamma Scout software version and serial
+	    number of the device.
+	synctime
+	    Synchronizes the time with the current local system time.
+	syncutctime
+	    Synchronizes the time with the current time in UTC (GMT+0).
+	settime:YYYY-MM-DD-HH-MM-SS
+	    Sets the time to the user defined value.
+	readlog:[txt|sqlite|csv|xml|bin]:[Filename]
+	    Reads out Gamma Scout log in text format, sqlite format, CSV, XML or
+	    binary format and writes the results to the specified filename.
+	clearlog
+	    Deletes the Gamma Scout log.
+	readcfg:Filename
+	    Reads out the configuration blob and writes it in the specified file in
+	    binary format.
+	devicereset
+	    Completely resets the device to its factory defaults. Do not perform
+	    this operation unless you have a good reason to.
+ 
+## License
 GNU GPL v3.
