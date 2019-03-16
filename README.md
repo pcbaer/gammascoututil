@@ -1,4 +1,23 @@
-# gammascoututil
+# GammaScout
+
+GammaScout is a fork of Johannes Bauer's GammaScoutUtil (Python) enriched with
+with Shell and PHP scripts by Sascha Ternes to simplify reading out measurement data from Gamma
+Scout Geiger counters and write them in a MySQL database.
+
+## License
+GNU GPL v3.
+
+## gammascout.sh
+
+This shell script will identify a Gamma Scout and read out all log data.
+Data is saved to an XML file and then imported into the database.
+
+## gammascout.php
+
+This PHP script will parse one XML log file and import the data into the
+MySQL database.
+
+## gammascoututil
 This is an ancient project of mine, gammascoututil. It's a tool to read out
 Gamma Scout Geiger counters via USB and record their radation measurements.
 
@@ -17,7 +36,7 @@ https://johannes-bauer.com/linux/gammascout/
 
 _-- Johannes Bauer_
 
-## Prerequisites
+### Prerequisites
 Here's what's required to get GammaScoutUtil running:
    
 - Python 3.0 or greater
@@ -26,7 +45,7 @@ Here's what's required to get GammaScoutUtil running:
 
 	sudo apt-get install python3 python3-serial
 
-## Getting Started
+### Getting Started
 
 After plugging in the Gamma Scout into your USB port, check with dmesg which
 device it is recognized as. Usually this will be /dev/ttyUSB0. Then, you can
@@ -34,7 +53,7 @@ call gammascoututil to check if it finds your Gamma Scout. Putting the Gamma
 Scout into PC mode beforehand is actually not necessary, the software takes care
 of that.
 
-### Usage
+#### Usage
 
 	gammascoututil <options> <commands>
 
@@ -70,5 +89,3 @@ of that.
 	    Completely resets the device to its factory defaults. Do not perform
 	    this operation unless you have a good reason to.
  
-## License
-GNU GPL v3.
