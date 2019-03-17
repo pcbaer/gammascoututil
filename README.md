@@ -17,6 +17,7 @@ The log data table is created with _tables.sql_.
 
 This shell script will identify a Gamma Scout and read out all log data.
 Data is saved to an XML file and then imported into the database.
+Log data memory on the device is cleared and time is set to UTC.
 
 ### Usage
 

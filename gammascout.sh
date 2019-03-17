@@ -28,7 +28,7 @@ echo "Identifying the Gamma Scout device..."
 $util -d $GAMMA_SCOUT_USB identify
 
 echo "Read all data..."
-$util -d $GAMMA_SCOUT_USB readlog:xml:$file clearlog
+$util -d $GAMMA_SCOUT_USB readlog:xml:$file clearlog syncutctime
 
 echo "Import into database..."
 $import $file
