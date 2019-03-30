@@ -1,10 +1,11 @@
 # GammaScout
 
 GammaScout is a fork of Johannes Bauer's GammaScoutUtil (Python) enriched with
-with Shell and PHP scripts by Sascha Ternes to simplify reading out measurement data from Gamma
-Scout Geiger counters and write them in a MySQL database.
+Shell and PHP scripts by Sascha Ternes to simplify reading out measurement data
+from Gamma Scout Geiger counters and write them in a MySQL database.
 
 ## License
+
 GNU GPL v3.
 
 ## Setup
@@ -42,6 +43,9 @@ MySQL database.
     php gammascout.php <XML file>
 
 ## gammascoututil
+
+_by Johannes Bauer_
+
 This is an ancient project of mine, gammascoututil. It's a tool to read out
 Gamma Scout Geiger counters via USB and record their radation measurements.
 
@@ -58,9 +62,8 @@ curves from counts/sec to µSv/hr.
 The reverse engineered Gamma Scout protocol documentation can be found at
 https://johannes-bauer.com/linux/gammascout/
 
-_-- Johannes Bauer_
-
 ### Prerequisites
+
 Here's what's required to get GammaScoutUtil running:
    
 - Python 3.0 or greater
