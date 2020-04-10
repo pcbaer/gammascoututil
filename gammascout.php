@@ -3,15 +3,10 @@
 include 'database.php';
 include 'parser.php';
 
-$xml = '';
-if ($argc <= 1) {
-	$xml = fread(STDIN, 1 * 1000 * 1000 * 1000);
-} else {
-	$xml = file_get_contents($argv[1]);
-}
-
+$xml      = file_get_contents($argc <= 1 ? 'php://stdin' : $argv[1]);
 $parser   = new GammaScout\Parser($xml);
 $database = new GammaScout\Database();
+
 $rows     = array();
 while (true) {
 	$row = $parser->getNext();
@@ -20,9 +15,7 @@ while (true) {
 	}
 	$rows[] = $row;
 }
-
 echo count($rows) . ' lines parsed.' . PHP_EOL;
+
 $database->insert($rows);
 echo 'Import finished.' . PHP_EOL;
-
-?>
