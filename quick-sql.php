@@ -1,9 +1,13 @@
 <?php
 
+use GammaScout\Dosage;
+use GammaScout\Parser;
+
+include 'dosage.php';
 include 'parser.php';
 
 $xml    = file_get_contents('php://stdin');
-$parser = new GammaScout\Parser($xml);
+$parser = new Parser($xml);
 
 while (true) {
 	$row = $parser->getNext();
@@ -26,6 +30,7 @@ while (true) {
 	}
 
 	$time   = $from->format('Y-m-d H') . ':00:00';
-	$dosage = $counts / (142 * $seconds / 60);
+	$cpm    = $counts / ($seconds / 60);
+	$dosage = Dosage::from($cpm);
 	echo "INSERT IGNORE INTO `gammascout` (`time`, `dosage`) VALUES ('" . $time . "', " . $dosage . ");" . PHP_EOL;
 }

@@ -65,7 +65,7 @@ https://johannes-bauer.com/linux/gammascout/
 ### Prerequisites
 
 Here's what's required to get GammaScoutUtil running:
-   
+
 - Python 3.0 or greater
 - pyserial
 
@@ -115,4 +115,17 @@ of that.
 	devicereset
 	    Completely resets the device to its factory defaults. Do not perform
 	    this operation unless you have a good reason to.
- 
+
+## Dosis conversion
+
+Taken from DosisConversion.py:
+
+_Calibration curves of the Gamma Scout to convert counts per minute to µSv per hour. Only valid for Gamma Scout tubes (LND 712)._
+
+| CPM       | Coefficient                            |  CPM | Coefficient | µSv   |
+| --------- | -------------------------------------- |  --- | ----------- | ----- |
+|    0–110  |                                138.300 |  100 |   138.30000 | 0.723 |
+|  111–388  |   -0.08339350180505416 * CPM + 147.560 |  300 |   122.54195 | 2.448 |
+|  389–1327 |   -0.01931769722814499 * CPM + 122.500 |  900 |   105.11407 | 8.562 |
+| 1328–4513 |  -0.004583987441130298 * CPM + 102.650 | 3600 |    86.14765 | 41.79 |
+|    ≥ 4514 | -0.0009384033800311318 * CPM +  85.706 | 7200 |    78.94950 | 91.20 |
