@@ -4,6 +4,25 @@ GammaScout is a fork of Johannes Bauer's GammaScoutUtil (Python) enriched with
 Shell and PHP scripts by Sascha Ternes to simplify reading out measurement data
 from Gamma Scout Geiger counters and write them in a MySQL database.
 
+## Bug in versions > 0.04
+
+Johannes' changes after v0.04 contain at least one bug in the Python code:
+
+    $ ./gammascoututil identify
+    Current date and time: 2023-06-01 07:08:36
+    Serial number        : 102349
+    Software version     : 6.10
+    Log buffer fill      : 21479 bytes
+    Exception in thread Thread-1:
+    Traceback (most recent call last):
+    File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+    File "/home/sascha/Projekte/gammascout/util/ReaderThreads.py", line 74, in run
+    data = self._conn.read(128)
+    File "/usr/lib/python3/dist-packages/serial/serialposix.py", line 575, in read
+    buf = os.read(self.fd, size - len(read))
+    TypeError: 'NoneType' object cannot be interpreted as an integer
+
 ## License
 
 GNU GPL v3.

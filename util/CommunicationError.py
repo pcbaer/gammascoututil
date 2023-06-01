@@ -1,7 +1,7 @@
 #
 #	GammaScoutUtil - Tool to communicate with Gamma Scout Geiger counters.
-#	Copyright (C) 2011-2013 Johannes Bauer
-#
+#	Copyright (C) 2011-2011 Johannes Bauer
+#	
 #	This file is part of GammaScoutUtil.
 #
 #	GammaScoutUtil is free software; you can redistribute it and/or modify
@@ -21,30 +21,26 @@
 #	Johannes Bauer <JohannesBauer@gmx.de>
 #
 
-import time
+class CommunicationError(Exception):
+	_errtypes = set([
+		"timeout",			# Communication timeout
+		"unparsable",		# Unexpected answer
+		"feature",			# Missing feature of some sort
+	])
 
-class TimeAlert():
-	def __init__(self, interval = 0):
-		self._trigger = None
-		self._interval = None
-		self.setinterval(interval)
+	def __init__(self, errtype, errmsg):
+		Exception.__init__(self, errmsg)
+		if errtype not in CommunicationError._errtypes:
+			raise Exception("Unknown errortype '%s'." % (errtyp))
+		self._errtype = errtype
+		self._errmsg = errmsg
+	
+	def gettype(self):
+		return self._errtype
 
-	def setinterval(self, interval):
-		self._interval = interval
-		self.reset()
+	def getmsg(self):
+		return self._errmsg
 
-	def reset(self):
-		self._trigger = time.time() + self._interval
+	def __str__(self):
+		return "Communication failure (%s): %s" % (self.gettype(), self.getmsg())
 
-	def triggered(self):
-		return time.time() > self._trigger
-
-	def triggeredreset(self):
-		"""Check if alarm has triggered and if so, reset it."""
-		result = self.triggered()
-		if result:
-			self.reset()
-		return result
-
-	def getinterval(self):
-		return self._interval

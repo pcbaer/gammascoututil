@@ -1,7 +1,7 @@
 #
 #	GammaScoutUtil - Tool to communicate with Gamma Scout Geiger counters.
 #	Copyright (C) 2011-2011 Johannes Bauer
-#
+#	
 #	This file is part of GammaScoutUtil.
 #
 #	GammaScoutUtil is free software; you can redistribute it and/or modify
@@ -21,57 +21,52 @@
 #	Johannes Bauer <JohannesBauer@gmx.de>
 #
 
-import logging
 import sys
 import datetime
 
 class LogDataParser():
-	def __init__(self, data, outputbackend):
-		self._log = logging.getLogger("gsu.parser." + self.__class__.__name__)
+	def __init__(self, data, outputbackend, debugmode = False):
 		self._data = data
 		self._output = outputbackend
+		self._debugmode = debugmode
 		self._curdate = None
 		self._interval = None
-		self._offset = 0
-		self._overflow = False
 
-	@staticmethod
+	def _debug(self, text):
+		if self._debugmode:
+			print(text, file = sys.stderr)
+
 	def _hexdecify(data):
 		return [ (10 * ((x & 0xf0) >> 4) + (x & 0x0f))  for x in data ]
 
 	def _peekbyte(self):
 		return self._data[self._offset]
-
+	
 	def _nextbytes(self, length):
 		o = self._offset
 		self._offset += length
 		return self._data[o : o + length]
-
-	def _gotcounts(self, timesecs, counts, overflow = False):
+	
+	def _gotcounts(self, timesecs, counts):
 		if timesecs is None:
-			self._log.warn("0x%x: Got no timesecs, but %d counts, ignoring (overflow = %s)." % (self._offset, counts, overflow))
-			return
-		if timesecs == 0:
-			self._log.warn("0x%x: Got zero timesecs, but %d counts, ignoring (overflow = %s)." % (self._offset, counts, overflow))
+			print("Got no timesecs, but %d counts, ignoring." % (counts), file = sys.stderr)
 			return
 		if self._curdate is None:
-			self._log.warn("0x%x: Got timesecs %s, counts %d without an initial timevalue, ignoring (overflow = %s)." % (self._offset, str(timesecs), counts, overflow))
+			print("Got timesecs %s, counts %d without an initial timevalue, ignoring." % (str(timesecs), counts), file = sys.stderr)
 			return
 		todate = self._curdate + datetime.timedelta(0, timesecs)
 		self._output.newinterval(self._curdate, todate, counts)
-		self._log.debug("0x%x: %s - %s: %d (overflow = %s)" % (self._offset, self._curdate, todate, counts, overflow))
+		self._debug("%s - %s: %d" % (self._curdate, todate, counts))
 		self._curdate = todate
 
-	def _expcts(self, expcounts):
+	def _expcts(counts):
 		"""Convert counts from Mirow's exponential representation into an
 		integer."""
-		(exponent, mantissa) = ((expcounts[0] & 0xfc) >> 2, ((expcounts[0] & 0x03) << 8) | expcounts[1])
+		(exponent, mantissa) = ((counts[0] & 0xfc) >> 2, ((counts[0] & 0x03) << 8) | counts[1])
 		exponent = (exponent + 1) // 2
 		if exponent == 0:
 			counts = mantissa
 		else:
 			counts = (mantissa + (2 ** 10)) * (2 ** (exponent - 1))
-		self._log.debug("0x%x: Exponential count conversion: %s [exp = %d, man = %d] -> %d" % (self._offset, "".join([ "%02x" % (c) for c in expcounts ]), exponent, mantissa, counts))
 		return counts
-
 
